@@ -51,13 +51,18 @@ const calculateBmi = (height: number, weight: number): string => {
     return "Obese (Class III)";
 }
 
-try {
-    const { value1, value2 } = parseArgumentsBmiCaluculator(process.argv);
-    console.log(calculateBmi(value1, value2));
-} catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
-    if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message;
+
+if (process.argv[1] === import.meta.filename) {
+    try {
+        const { value1, value2 } = parseArgumentsBmiCaluculator(process.argv);
+        console.log(calculateBmi(value1, value2));
+    } catch (error: unknown) {
+        let errorMessage = 'Something bad happened.'
+        if (error instanceof Error) {
+            errorMessage += ' Error: ' + error.message;
+        }
+        console.log(errorMessage);
     }
-    console.log(errorMessage);
 }
+
+export default calculateBmi;
