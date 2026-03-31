@@ -11,11 +11,11 @@ const parseArgumentsBmiCaluculator = (args: string[]): BmiCalulatorValues => {
         return {
             value1: Number(args[2]),
             value2: Number(args[3])
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
     }
-}
+};
 
 const calculateBmi = (height: number, weight: number): string => {
     const heightInMeter = height / 100;
@@ -49,7 +49,7 @@ const calculateBmi = (height: number, weight: number): string => {
     }
 
     return "Obese (Class III)";
-}
+};
 
 
 if (process.argv[1] === import.meta.filename) {
@@ -57,7 +57,7 @@ if (process.argv[1] === import.meta.filename) {
         const { value1, value2 } = parseArgumentsBmiCaluculator(process.argv);
         console.log(calculateBmi(value1, value2));
     } catch (error: unknown) {
-        let errorMessage = 'Something bad happened.'
+        let errorMessage = 'Something bad happened.';
         if (error instanceof Error) {
             errorMessage += ' Error: ' + error.message;
         }

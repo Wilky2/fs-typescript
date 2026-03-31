@@ -7,7 +7,7 @@ const parseArgumentsExerciseCalculator = (args: string[]): ExerciseCalculatorVal
     if (args.length < 4) throw new Error('Not enough arguments');
 
     const values: number[] = [];
-    let target = 0;
+    let target: number;
 
     if (!isNaN(Number(args[2]))) {
         target = Number(args[2]);
@@ -24,7 +24,7 @@ const parseArgumentsExerciseCalculator = (args: string[]): ExerciseCalculatorVal
     }
 
     return { target, values };
-}
+};
 
 interface result {
     periodLength: number,
@@ -52,7 +52,7 @@ try {
     const { target, values } = parseArgumentsExerciseCalculator(process.argv);
     console.log(calculateExercises(values, target));
 } catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
+    let errorMessage = 'Something bad happened.';
     if (error instanceof Error) {
         errorMessage += ' Error: ' + error.message;
     }
