@@ -44,17 +44,21 @@ function calculateExercises(dailyExerciseHours: number[], targetValue: number): 
     const average = dailyExerciseHours.reduce((previous, current) => previous + current, 0) / periodLength;
     const success = average >= target;
     const rating = average < target / 2 ? 1 : average > target / 2 && average < target ? 2 : 3;
-    const ratingDescription = rating === 1 ? "not your best—capable of more." : rating === 2 ? "not too bad but could be better" : "excellent—keep up this rhythm";
+    const ratingDescription = rating === 1 ? "bad" : rating === 2 ? "not too bad but could be better" : "excellent—keep up this rhythm";
     return { periodLength, trainingDays, success, rating, ratingDescription, target, average };
 }
 
-try {
-    const { target, values } = parseArgumentsExerciseCalculator(process.argv);
-    console.log(calculateExercises(values, target));
-} catch (error: unknown) {
-    let errorMessage = 'Something bad happened.';
-    if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message;
+if (process.argv[1] === import.meta.filename) {
+    try {
+        const { target, values } = parseArgumentsExerciseCalculator(process.argv);
+        console.log(calculateExercises(values, target));
+    } catch (error: unknown) {
+        let errorMessage = 'Something bad happened.';
+        if (error instanceof Error) {
+            errorMessage += ' Error: ' + error.message;
+        }
+        console.log(errorMessage);
     }
-    console.log(errorMessage);
 }
+
+export default calculateExercises;
