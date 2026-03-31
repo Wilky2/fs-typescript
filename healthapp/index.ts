@@ -24,7 +24,7 @@ app.get('/bmi', (req, res) => {
         res.send(result);
     }
     else {
-        res.send({
+        res.status(400).send({
             error: "malformatted parameters"
         });
     }
@@ -38,14 +38,14 @@ app.post('/exercises', (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { daily_exercises, target } = req.body;
     if (!daily_exercises || !target) {
-        res.send({
+        res.status(400).send({
             error: "parameters missing"
         });
         return;
     }
 
     if (isNaN(Number(target)) || !isArrayOfNumbers(daily_exercises)) {
-        res.send({
+        res.status(400).send({
             error: "malformatted parameters"
         });
         return;
@@ -56,7 +56,7 @@ app.post('/exercises', (req, res) => {
     res.send(result);
 });
 
-const PORT = 3003;
+const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
