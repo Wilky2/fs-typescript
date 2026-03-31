@@ -36,6 +36,7 @@ const isArrayOfNumbers = (value: unknown) => {
 
 app.post('/exercises', (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { daily_exercises, target } = req.body;
     if (!daily_exercises || !target) {
         res.status(400).send({
@@ -52,6 +53,7 @@ app.post('/exercises', (req, res) => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const result = calculateExercises(daily_exercises, target);
     res.send(result);
 });
