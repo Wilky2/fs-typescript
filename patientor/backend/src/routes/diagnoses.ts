@@ -1,11 +1,11 @@
 import express, { type Response } from 'express';
+import diagnosisService from '../services/diagnosisService.ts';
 import { type Diagnosis } from '../type.ts';
-import diagnoses from '../../data/diagnoses.ts';
 
 const router = express.Router();
 
 router.get('/', (_req, res: Response<Diagnosis[]>) => {
-    res.send(diagnoses);
+    res.send(diagnosisService.getEntries());
 });
 
 export default router;
