@@ -1,6 +1,6 @@
 import { Gender, type NewPatient } from "./type.ts";
 
-export const isString = (text: unknown): text is string => {
+const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
 
@@ -28,7 +28,7 @@ const parseOccupation = (occupation: unknown): string => {
     return occupation;
 };
 
-export const isDate = (date: string): boolean => {
+const isDate = (date: string): boolean => {
     return Boolean(Date.parse(date));
 };
 
