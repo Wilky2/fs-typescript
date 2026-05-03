@@ -2,7 +2,7 @@ name: Patientor API Tests
 
 on:
   push:
-    branches: [ main, master ] // HIGHTLIGHT LINE
+    branches: [ main, master ]
 
 jobs:
   test:
