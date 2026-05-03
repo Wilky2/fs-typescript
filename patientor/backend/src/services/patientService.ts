@@ -1,6 +1,15 @@
 import { type NewPatient, type NonSensitivePatient, type Patient } from '../type.ts';
 import patients from '../../data/patients.ts';
 import { v1 as uuid } from 'uuid';
+import { isString } from '../utils.ts';
+
+const generateId = (): string => {
+    const id = uuid();
+    if (isString(id)) {
+        return id;
+    }
+    return "id-0001";
+};
 
 const getEntries = (): Patient[] => {
     return patients;
@@ -17,12 +26,11 @@ const getNonSensitiveEntries = (): NonSensitivePatient[] => {
 };
 
 const addPatient = (entry: NewPatient): Patient => {
-    const id: string = uuid()!;
+    const id = generateId();
     const newPatient = {
         id,
         ...entry
     };
-
     patients.push(newPatient);
     return newPatient;
 };
