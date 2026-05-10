@@ -1,0 +1,30 @@
+import { z } from 'zod';
+
+export const Weather = {
+    Sunny: 'sunny',
+    Rainy: 'rainy',
+    Cloudy: 'cloudy',
+    Stormy: 'stormy',
+    Windy: 'windy',
+} as const;
+
+export type Weather = typeof Weather[keyof typeof Weather];
+
+export const Visibility = {
+    Great: 'great',
+    Good: 'good',
+    Ok: 'ok',
+    Poor: 'poor',
+} as const;
+
+export type Visibility = typeof Visibility[keyof typeof Visibility];
+
+export const DiarySchema = z.object({
+    id: z.number().optional(),
+    weather: z.enum(Weather),
+    visibility: z.enum(Visibility),
+    date: z.iso.date(),
+    comment: z.string().optional()
+});
+
+export type Diary = z.infer<typeof DiarySchema>;
