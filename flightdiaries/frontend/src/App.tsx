@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { DiarySchema, type Diary } from "./types";
-import { z } from 'zod';
 import { ErrorNotification } from "./components/notification";
+import type { Diary } from "./types";
+import { create, getAll } from "./services/DiaryService";
+import { DiaryForm } from "./components/DiaryForm";
 
 const App = () => {
 
   const [diaries, setDiaries] = useState<Diary[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+
   useEffect(() => {
-    axios.get<Diary[]>("/api/diaries").then(response => {
-      try {
-        setDiaries(z.array(DiarySchema).parse(response.data));
-      }
-      catch (error) {
-        console.log(error);
-        setError('Something goes wrong when getting the diaires');
-      }
+    getAll().then(diaries => {
+      setDiaries(diaries);
+    }).catch(error => {
+      console.log(error);
+      setError('Something goes wrong when getting the diaires');
     });
   }, []);
 
+  const createDiary = async (diary: unknown) => {
+    const newDiary = await create(diary);
+    setDiaries([...diaries, newDiary]);
+  }
+
   return (
     <div>
+      <DiaryForm createDiary={createDiary} setNotification={setError} />
       <h1>Diaries entries</h1>
       <ErrorNotification message={error} />
       {
