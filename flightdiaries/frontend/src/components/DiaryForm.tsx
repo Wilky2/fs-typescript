@@ -1,7 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import { Visibility, Weather } from "../types";
 
-export const DiaryForm = ({ createDiary, setNotification }: { createDiary: (val: unknown) => Promise<void>, setNotification: (val: string) => void }) => {
+export const DiaryForm = ({ createDiary, setNotificationError, setNotificationSuccess }: { createDiary: (val: unknown) => Promise<void>, setNotificationError: (val: string) => void, setNotificationSuccess: (val: string) => void }) => {
     const [date, setDate] = useState('');
     const [visibility, setVisibility] = useState('');
     const [weather, setWeather] = useState('');
@@ -12,18 +13,22 @@ export const DiaryForm = ({ createDiary, setNotification }: { createDiary: (val:
         const formValue = { date, visibility, weather, comment };
         try {
             await createDiary(formValue);
+            setDate('');
+            setVisibility('');
+            setWeather('');
+            setComment('');
+            setNotificationSuccess('Diary created successfully');
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error(error.response?.data);
                 const field = error.response?.data.error[0].path[0] as 'date' | 'visibility' | 'weather' | 'comment';
-                setNotification(`Error: Incorrect  ${field}: ${formValue[field]}`)
+                setNotificationError(`Error: Incorrect  ${field}: ${formValue[field]}`);
             } else {
                 console.error(error);
-                setNotification('Something goes wrong when creating the diaires');
+                setNotificationError('Something goes wrong when creating the diaires');
             }
         }
-
-    }
+    };
 
     return (
         <>
@@ -31,15 +36,37 @@ export const DiaryForm = ({ createDiary, setNotification }: { createDiary: (val:
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>date</label>
-                    <input name="date" value={date} onChange={e => setDate(e.target.value)} />
+                    <input name="date" type="date" value={date} onChange={e => setDate(e.target.value)} />
                 </div>
                 <div>
                     <label>visibility</label>
-                    <input name="visibility" value={visibility} onChange={e => setVisibility(e.target.value)} />
+                    {Object.values(Visibility).map(value =>
+                        <label key={value}>
+                            <input
+                                type="radio"
+                                name="visibility"
+                                value={value}
+                                checked={visibility === value}
+                                onChange={e => setVisibility(e.target.value)}
+                            />
+                            {value}
+                        </label>
+                    )}
                 </div>
                 <div>
                     <label>weather</label>
-                    <input name="weather" value={weather} onChange={e => setWeather(e.target.value)} />
+                    {Object.values(Weather).map(value =>
+                        <label key={value}>
+                            <input
+                                type="radio"
+                                name="weather"
+                                value={value}
+                                checked={weather === value}
+                                onChange={e => setWeather(e.target.value)}
+                            />
+                            {value}
+                        </label>
+                    )}
                 </div>
                 <div>
                     <label>comment</label>
@@ -48,5 +75,5 @@ export const DiaryForm = ({ createDiary, setNotification }: { createDiary: (val:
                 <button>create</button>
             </form>
         </>
-    )
-}
+    );
+};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ErrorNotification } from "./components/notification";
+import { ErrorNotification, SuccessNotification } from "./components/notification";
 import type { Diary } from "./types";
 import { create, getAll } from "./services/DiaryService";
 import { DiaryForm } from "./components/DiaryForm";
@@ -8,13 +8,20 @@ const App = () => {
 
   const [diaries, setDiaries] = useState<Diary[]>([]);
   const [error, setError] = useState<string | null>(null);
-
+  const [success, setSuccess] = useState<string | null>(null);
 
   const notifyError = (error: string) => {
     setTimeout(() => {
       setError(null);
     }, 5000);
     setError(error);
+  };
+
+  const notifySuccess = (success: string) => {
+    setTimeout(() => {
+      setSuccess(null);
+    }, 5000);
+    setSuccess(success);
   };
 
   useEffect(() => {
@@ -29,12 +36,13 @@ const App = () => {
   const createDiary = async (diary: unknown) => {
     const newDiary = await create(diary);
     setDiaries([...diaries, newDiary]);
-  }
+  };
 
   return (
     <div>
       <ErrorNotification message={error} />
-      <DiaryForm createDiary={createDiary} setNotification={notifyError} />
+      <SuccessNotification message={success} />
+      <DiaryForm createDiary={createDiary} setNotificationError={notifyError} setNotificationSuccess={notifySuccess} />
       <h1>Diaries entries</h1>
       {
         diaries.map(diarie => (
