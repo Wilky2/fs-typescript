@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Diary } from "../types";
+import axios from "axios";
 
 export const DiaryForm = ({ createDiary, setNotification }: { createDiary: (val: unknown) => Promise<void>, setNotification: (val: string) => void }) => {
     const [date, setDate] = useState('');
@@ -8,12 +8,19 @@ export const DiaryForm = ({ createDiary, setNotification }: { createDiary: (val:
     const [comment, setComment] = useState('');
 
     const handleSubmit = async (event: React.SyntheticEvent) => {
-        event.preventDefault()
+        event.preventDefault();
+        const formValue = { date, visibility, weather, comment };
         try {
-            await createDiary({ date, visibility, weather, comment });
+            await createDiary(formValue);
         } catch (error) {
-            console.log(error);
-            setNotification('Something goes wrong when getting the diaires');
+            if (axios.isAxiosError(error)) {
+                console.error(error.response?.data);
+                const field = error.response?.data.error[0].path[0] as 'date' | 'visibility' | 'weather' | 'comment';
+                setNotification(`Error: Incorrect  ${field}: ${formValue[field]}`)
+            } else {
+                console.error(error);
+                setNotification('Something goes wrong when creating the diaires');
+            }
         }
 
     }

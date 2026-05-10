@@ -10,12 +10,19 @@ const App = () => {
   const [error, setError] = useState<string | null>(null);
 
 
+  const notifyError = (error: string) => {
+    setTimeout(() => {
+      setError(null);
+    }, 5000);
+    setError(error);
+  };
+
   useEffect(() => {
     getAll().then(diaries => {
       setDiaries(diaries);
     }).catch(error => {
       console.log(error);
-      setError('Something goes wrong when getting the diaires');
+      notifyError('Something goes wrong when getting the diaires');
     });
   }, []);
 
@@ -26,9 +33,9 @@ const App = () => {
 
   return (
     <div>
-      <DiaryForm createDiary={createDiary} setNotification={setError} />
-      <h1>Diaries entries</h1>
       <ErrorNotification message={error} />
+      <DiaryForm createDiary={createDiary} setNotification={notifyError} />
+      <h1>Diaries entries</h1>
       {
         diaries.map(diarie => (
           <div key={diarie.id}>
