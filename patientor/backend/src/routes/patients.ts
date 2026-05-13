@@ -14,6 +14,15 @@ const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
     }
 };
 
+const patientIdParser = (req: Request, _res: Response, next: NextFunction) => {
+    try {
+        z.string().parse(req.params.id);
+        next();
+    } catch (error: unknown) {
+        next(error);
+    }
+};
+
 const errorMiddleware = (error: unknown, _req: Request, res: Response, next: NextFunction) => {
     if (error instanceof z.ZodError) {
         res.status(400).send({ error: error.issues });
@@ -24,6 +33,10 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
 
 router.get('/', (_req, res: Response<NonSensitivePatient[]>) => {
     res.send(patientService.getNonSensitiveEntries());
+});
+
+router.get('/:id', patientIdParser, (req: Request<{ id: string }, unknown, unknown>, res: Response<Patient | null>) => {
+    res.send(patientService.getPatient(req.params.id));
 });
 
 router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
