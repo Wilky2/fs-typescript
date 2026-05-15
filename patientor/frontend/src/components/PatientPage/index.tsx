@@ -4,7 +4,12 @@ import { useEffect, useState } from 'react';
 import patientService from "../../services/patients";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
-import React from 'react';
+import EntryDetails from './EntryDetails';
+import Button from '@mui/material/Button';
+
+const marginStyle: React.CSSProperties = {
+    margin: "10px",
+};
 
 const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
     const id = useParams().id;
@@ -38,24 +43,14 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
                     <h3>entries</h3>
                     {
                         patient?.entries.map(entry => (
-                            <React.Fragment key={entry.id}>
-                                <p>{entry.date} {entry.description}</p>
-                                {
-                                    entry.diagnosisCodes && entry.diagnosisCodes.length !== 0 &&
-                                    <ul>
-                                        {
-                                            entry.diagnosisCodes.map(diagnosis =>
-                                                <li key={diagnosis}>
-                                                    {diagnosis} {diagnosises.find(d => d.code === diagnosis)?.name ?? ''}
-                                                </li>)
-                                        }
-                                    </ul>
-                                }
-                            </React.Fragment>
+                            <EntryDetails key={entry.id} entry={entry} diagnosises={diagnosises} />
                         ))
                     }
                 </>
             }
+            <Button variant="contained" style={marginStyle}>
+                ADD NEW ENTRY
+            </Button >
         </>
     );
 };
