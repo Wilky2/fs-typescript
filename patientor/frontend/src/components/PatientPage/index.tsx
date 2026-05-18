@@ -1,11 +1,13 @@
 import { useParams } from 'react-router-dom';
-import { type Diagnosis, type Patient } from '../../types';
+import { EntryWithoutId, type Diagnosis, type Patient } from '../../types';
 import { useEffect, useState } from 'react';
 import patientService from "../../services/patients";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import EntryDetails from './EntryDetails';
 import Button from '@mui/material/Button';
+import AddEntryModal from '../AddEntryModal';
+import axios from 'axios';
 
 const marginStyle: React.CSSProperties = {
     margin: "10px",
@@ -24,6 +26,39 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
         };
         void fetchPatient();
     }, [id]);
+
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+    const [error, setError] = useState<string>();
+
+    const openModal = (): void => setModalOpen(true);
+
+    const closeModal = (): void => {
+        setModalOpen(false);
+        setError(undefined);
+    };
+
+    const submitNewEntry = async (values: EntryWithoutId) => {
+        if (patient) {
+            try {
+                const result = await patientService.addEntry(patient.id, values);
+                setPatient(result);
+                setModalOpen(false);
+            } catch (e: unknown) {
+                if (axios.isAxiosError(e)) {
+                    if (e?.response?.data && typeof e?.response?.data === "string") {
+                        const message = e.response.data.replace('Something went wrong. Error: ', '');
+                        console.error(message);
+                        setError(message);
+                    } else {
+                        setError("Unrecognized axios error");
+                    }
+                } else {
+                    console.error("Unknown error", e);
+                    setError("Unknown error");
+                }
+            }
+        }
+    };
 
     return (
         <>
@@ -48,7 +83,13 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
                     }
                 </>
             }
-            <Button variant="contained" style={marginStyle}>
+            <AddEntryModal
+                modalOpen={modalOpen}
+                onSubmit={submitNewEntry}
+                error={error}
+                onClose={closeModal}
+            />
+            <Button variant="contained" style={marginStyle} onClick={() => openModal()}>
                 ADD NEW ENTRY
             </Button >
         </>
