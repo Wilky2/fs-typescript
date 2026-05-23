@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { EntryWithoutId, type Diagnosis, type Patient } from '../../types';
+import { type EntryWithoutId, type Diagnosis, type Patient } from '../../types';
 import { useEffect, useState } from 'react';
 import patientService from "../../services/patients";
 import MaleIcon from '@mui/icons-material/Male';
@@ -38,6 +38,7 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
     };
 
     const submitNewEntry = async (values: EntryWithoutId) => {
+        console.log(patient);
         if (patient) {
             try {
                 const result = await patientService.addEntry(patient.id, values);
@@ -49,7 +50,10 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
                         const message = e.response.data.replace('Something went wrong. Error: ', '');
                         console.error(message);
                         setError(message);
-                    } else {
+                    } else if (e.response?.data?.error[0].message) {
+                        setError(e.response?.data?.error[0].message);
+                    }
+                    else {
                         setError("Unrecognized axios error");
                     }
                 } else {

@@ -39,7 +39,6 @@ const HealthCheckEntrySchema = BaseEntrySchema.extend({
   healthCheckRating: HealthCheckRatingSchema,
 });
 
-
 const SickLeaveSchema = z.object({
   startDate: z.iso.date(),
   endDate: z.iso.date(),
