@@ -13,7 +13,7 @@ const marginStyle: React.CSSProperties = {
     margin: "10px",
 };
 
-const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
+const PatientPage = ({ diagnoses }: { diagnoses: Diagnosis[] }) => {
     const id = useParams().id;
 
     const [patient, setPatient] = useState<Patient>();
@@ -82,7 +82,7 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
                     <h3>entries</h3>
                     {
                         patient?.entries.map(entry => (
-                            <EntryDetails key={entry.id} entry={entry} diagnosises={diagnosises} />
+                            <EntryDetails key={entry.id} entry={entry} diagnoses={diagnoses} />
                         ))
                     }
                 </>
@@ -92,6 +92,7 @@ const PatientPage = ({ diagnosises }: { diagnosises: Diagnosis[] }) => {
                 onSubmit={submitNewEntry}
                 error={error}
                 onClose={closeModal}
+                diagnoses={diagnoses}
             />
             <Button variant="contained" style={marginStyle} onClick={() => openModal()}>
                 ADD NEW ENTRY

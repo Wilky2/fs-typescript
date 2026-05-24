@@ -3,7 +3,7 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { red, yellow, green, amber } from '@mui/material/colors';
 
-const HealthCheck = ({ entry, diagnosises }: { entry: HealthCheckEntry, diagnosises: Diagnosis[] }) => {
+const HealthCheck = ({ entry, diagnoses }: { entry: HealthCheckEntry, diagnoses: Diagnosis[] }) => {
 
     let color: string = '';
     if (entry.healthCheckRating === HealthCheckRating.Healthy) {
@@ -33,7 +33,7 @@ const HealthCheck = ({ entry, diagnosises }: { entry: HealthCheckEntry, diagnosi
                     {
                         entry.diagnosisCodes.map(diagnosis =>
                             <li key={diagnosis}>
-                                {diagnosis} {diagnosises.find(d => d.code === diagnosis)?.name ?? ''}
+                                {diagnosis} {diagnoses.find(d => d.code === diagnosis)?.name ?? ''}
                             </li>)
                     }
                 </ul>

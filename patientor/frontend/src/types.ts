@@ -39,6 +39,8 @@ const HealthCheckEntrySchema = BaseEntrySchema.extend({
   healthCheckRating: HealthCheckRatingSchema,
 });
 
+export type HealthCheckEntry = z.infer<typeof HealthCheckEntrySchema>;
+
 const SickLeaveSchema = z.object({
   startDate: z.iso.date(),
   endDate: z.iso.date(),
@@ -50,6 +52,7 @@ const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
   sickLeave: SickLeaveSchema.optional()
 });
 
+export type OccupationalHealthcareEntry = z.infer<typeof OccupationalHealthcareEntrySchema>;
 
 const DischargeSchema = z.object({
   date: z.string(),
@@ -60,6 +63,8 @@ const HospitalEntrySchema = BaseEntrySchema.extend({
   type: z.literal("Hospital"),
   discharge: DischargeSchema.optional()
 });
+
+export type HospitalEntry = z.infer<typeof HospitalEntrySchema>;
 
 export const EntryWithoutIdSchema = z.discriminatedUnion("type", [
   HospitalEntrySchema,

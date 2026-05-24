@@ -10,15 +10,15 @@ const borderStyle: React.CSSProperties = {
     borderRadius: "8px",
 };
 
-const EntryDetails = ({ entry, diagnosises }: { entry: Entry, diagnosises: Diagnosis[] }) => {
+const EntryDetails = ({ entry, diagnoses }: { entry: Entry, diagnoses: Diagnosis[] }) => {
 
     switch (entry.type) {
         case "Hospital":
-            return <div style={borderStyle}><Hospital entry={entry} diagnosises={diagnosises} /></div>;
+            return <div style={borderStyle}><Hospital entry={entry} diagnoses={diagnoses} /></div>;
         case "OccupationalHealthcare":
-            return <div style={borderStyle}><OccupationHealthcare entry={entry} diagnosises={diagnosises} /></div>;
+            return <div style={borderStyle}><OccupationHealthcare entry={entry} diagnoses={diagnoses} /></div>;
         case "HealthCheck":
-            return <div style={borderStyle}><HealthCheck entry={entry} diagnosises={diagnosises} /></div>;
+            return <div style={borderStyle}><HealthCheck entry={entry} diagnoses={diagnoses} /></div>;
         default:
             return assertNever(entry);
     };

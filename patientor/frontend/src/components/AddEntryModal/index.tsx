@@ -1,22 +1,23 @@
 import { Dialog, DialogTitle, DialogContent, Divider, Alert } from '@mui/material';
 
 import AddEntryForm from "./AddEntryForm";
-import { type EntryWithoutId } from '../../types';
+import { type Diagnosis, type EntryWithoutId } from '../../types';
 
 interface Props {
     modalOpen: boolean;
     onClose: () => void;
     onSubmit: (values: EntryWithoutId) => void;
     error?: string;
+    diagnoses: Diagnosis[]
 }
 
-const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
+const AddEntryModal = ({ modalOpen, onClose, onSubmit, error, diagnoses }: Props) => (
     <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
         <DialogTitle>Add a new entry </DialogTitle>
         <Divider />
         <DialogContent>
             {error && <Alert severity="error">{error}</Alert>}
-            <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
+            <AddEntryForm diagnoses={diagnoses} onSubmit={onSubmit} onCancel={onClose} />
         </DialogContent>
     </Dialog>
 );

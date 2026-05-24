@@ -1,7 +1,7 @@
 import { type Diagnosis, type OccupationalHealthcareEntry } from "../../types";
 import WorkIcon from '@mui/icons-material/Work';
 
-const OccupationHealthcare = ({ entry, diagnosises }: { entry: OccupationalHealthcareEntry, diagnosises: Diagnosis[] }) => {
+const OccupationHealthcare = ({ entry, diagnoses }: { entry: OccupationalHealthcareEntry, diagnoses: Diagnosis[] }) => {
 
     return (
         <>
@@ -16,7 +16,7 @@ const OccupationHealthcare = ({ entry, diagnosises }: { entry: OccupationalHealt
                     {
                         entry.diagnosisCodes.map(diagnosis =>
                             <li key={diagnosis}>
-                                {diagnosis} {diagnosises.find(d => d.code === diagnosis)?.name ?? ''}
+                                {diagnosis} {diagnoses.find(d => d.code === diagnosis)?.name ?? ''}
                             </li>)
                     }
                 </ul>
